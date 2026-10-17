@@ -81,7 +81,7 @@ export default function AboutPage() {
           </div>
           <div className="text-center md:text-left">
             <h2 className="text-2xl font-heading font-bold text-foreground mb-2">Meet Our Chef</h2>
-            <p className="text-muted-foreground italic mb-4">"Cooking is like painting or writing a song. Just as there are only so many notes or colors, there are only so many flavors—it's how you combine them that sets you apart."</p>
+            <p className="text-muted-foreground italic mb-4">&ldquo;Cooking is like painting or writing a song. Just as there are only so many notes or colors, there are only so many flavors&mdash;it&apos;s how you combine them that sets you apart.&rdquo;</p>
             <h4 className="font-semibold text-primary">Chef Antonio Rossi</h4>
           </div>
         </motion.section>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Phone, Mail, Clock } from "lucide-react";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 
 const contactDetails = [
@@ -22,7 +22,7 @@ export default function ContactPage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-heading font-bold text-foreground mb-4">Get in Touch</h1>
-          <p className="text-muted-foreground">We'd love to hear from you. Visit us or drop a message.</p>
+          <p className="text-muted-foreground">We&apos;d love to hear from you. Visit us or drop a message.</p>
         </motion.div>
 
         {/* Google Maps Embed */}
