@@ -38,100 +38,349 @@ export const hotelDetails = {
   timezone: "Asia/Kolkata",
 };
 
-// Curated Category Default Hero Images
+// Curated Category Hero Images (Using Real High-Resolution Apoorvaa Menu Assets)
 const categoryHeroImages: Record<string, string> = {
-  "tiffin": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?q=80&w=1200&auto=format&fit=crop",
-  "dosa": "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=1200&auto=format&fit=crop",
-  "rava-roast": "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=1200&auto=format&fit=crop",
-  "uthappam": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?q=80&w=1200&auto=format&fit=crop",
-  "parotta-chappathi": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1200&auto=format&fit=crop",
-  "meals": "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=1200&auto=format&fit=crop",
-  "tandoori-starters": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=1200&auto=format&fit=crop",
-  "starters": "https://images.unsplash.com/photo-1610057099443-f6893282423a?q=80&w=1200&auto=format&fit=crop",
-  "soup": "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1200&auto=format&fit=crop",
-  "variety-rice": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=1200&auto=format&fit=crop",
-  "main-course": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1200&auto=format&fit=crop",
-  "tandoori-roti": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1200&auto=format&fit=crop",
-  "tandoori-naan-kulcha": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1200&auto=format&fit=crop",
-  "rice-pulao-noodles": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=1200&auto=format&fit=crop",
-  "indian-main-course": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=1200&auto=format&fit=crop",
-  "juice": "https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=1200&auto=format&fit=crop",
-  "chaat": "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=1200&auto=format&fit=crop",
-  "kids-special": "https://images.unsplash.com/photo-1576107232684-1279f3908594?q=80&w=1200&auto=format&fit=crop",
-  "sandwich": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=1200&auto=format&fit=crop",
-  "apoorvaa-special-pasta": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop",
-  "beverages": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1200&auto=format&fit=crop",
-  "snacks": "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=1200&auto=format&fit=crop",
-  "ice-creams-milk-shake": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1200&auto=format&fit=crop",
+  "tiffin": "/menu-images/tiffin/kesari.webp",
+  "dosa": "/menu-images/dosa/apoorvaa-special-roast.webp",
+  "rava-roast": "/menu-images/rava-roast/rava-roast.webp",
+  "uthappam": "/menu-images/uthappam/uthappam.webp",
+  "parotta-chappathi": "/menu-images/parotta-chappathi/chappathi.webp",
+  "meals": "/menu-images/meals/special-meals-unlimited.webp",
+  "tandoori-starters": "/menu-images/tandoori-starters/paneer-tikka.webp",
+  "starters": "/menu-images/starters/paneer-pepper-fry.webp",
+  "soup": "/menu-images/soup/veg-clear-soup.webp",
+  "variety-rice": "/menu-images/variety-rice/curd-rice.webp",
+  "main-course": "/menu-images/main-course/paneer-tikka-masala.webp",
+  "tandoori-roti": "/menu-images/tandoori-roti/roti.webp",
+  "tandoori-naan-kulcha": "/menu-images/tandoori-naan-kulcha/paneer-cheese-naan.webp",
+  "rice-pulao-noodles": "/menu-images/rice-pulao-noodles/jeera-rice.webp",
+  "indian-main-course": "/menu-images/indian-main-course/channa-masala.webp",
+  "juice": "/menu-images/juice/apple-juice.webp",
+  "chaat": "/menu-images/chaat/cheese-pav-bhaji.webp",
+  "kids-special": "/menu-images/kids-special/french-fries.webp",
+  "sandwich": "/menu-images/sandwich/corn-sandwich.webp",
+  "apoorvaa-special-pasta": "/menu-images/apoorvaa-special-pasta/classic-mac-and-cheese.webp",
+  "beverages": "/menu-images/beverages/filter-coffee.webp",
+  "snacks": "/menu-images/snacks/vazhaikkai-baji.webp",
+  "ice-creams-milk-shake": "/menu-images/ice-creams-milk-shake/kulfi.webp"
 };
 
-// Curated Dish Image Mapping Helper
+// Complete 306 Real Dish Image Mapping Table
+const realDishImageMap: Record<string, string> = {
+  "tiffinkesari": "/menu-images/tiffin/kesari.webp",
+  "tiffinidly2pcs": "/menu-images/tiffin/idly.webp",
+  "tiffinsambaridly2pcs": "/menu-images/tiffin/sambar-idly.webp",
+  "tiffinminiidlysambar14pcs": "/menu-images/tiffin/mini-idly-sambar.webp",
+  "tiffinellupodiidly": "/menu-images/tiffin/ellu-podi-idly.webp",
+  "tiffinandhrapodiidly": "/menu-images/tiffin/andhra-podi-idly.webp",
+  "tiffinpoondupodiidly": "/menu-images/tiffin/poondu-podi-idly.webp",
+  "tiffingheepodiidly": "/menu-images/tiffin/ghee-podi-idly.webp",
+  "tiffinvada1pc": "/menu-images/tiffin/vada.webp",
+  "tiffinvadasambarcurdrasa1pc": "/menu-images/tiffin/vada-sambar-or-curd-or-rasa.webp",
+  "tiffingheepongal": "/menu-images/tiffin/ghee-pongal.webp",
+  "tiffinpoori2pcs": "/menu-images/tiffin/poori.webp",
+  "tiffinwheatupmawithcurd": "/menu-images/tiffin/wheat-upma-with-curd.webp",
+  "tiffinidiyappam3pcs": "/menu-images/tiffin/idiyappam.webp",
+  "tiffinvadakari": "/menu-images/tiffin/vadakari.webp",
+  "tiffinpaniyaram": "/menu-images/tiffin/paniyaram.webp",
+  "tiffinidlyvadakari": "/menu-images/tiffin/idly-vadakari.webp",
+  "tiffinappam1pc": "/menu-images/tiffin/appam.webp",
+  "dosaapoorvaaspecialroast": "/menu-images/dosa/apoorvaa-special-roast.webp",
+  "dosaroast": "/menu-images/dosa/roast.webp",
+  "dosapaperroast": "/menu-images/dosa/paper-roast.webp",
+  "dosaonionmasalroast": "/menu-images/dosa/onion-masal-roast.webp",
+  "dosagheeroast": "/menu-images/dosa/ghee-roast.webp",
+  "dosamasalroast": "/menu-images/dosa/masal-roast.webp",
+  "dosaonionroast": "/menu-images/dosa/onion-roast.webp",
+  "dosapodiroast": "/menu-images/dosa/podi-roast.webp",
+  "dosapodimasalroast": "/menu-images/dosa/podi-masal-roast.webp",
+  "dosagheemasalroast": "/menu-images/dosa/ghee-masal-roast.webp",
+  "dosagheepodimasalroast": "/menu-images/dosa/ghee-podi-masal-roast.webp",
+  "dosagheepodiroast": "/menu-images/dosa/ghee-podi-roast.webp",
+  "dosapodionionroast": "/menu-images/dosa/podi-onion-roast.webp",
+  "dosagheeonionroast": "/menu-images/dosa/ghee-onion-roast.webp",
+  "dosagheepodionionroast": "/menu-images/dosa/ghee-podi-onion-roast.webp",
+  "dosafamilyroast": "/menu-images/dosa/family-roast.webp",
+  "dosabutterroast": "/menu-images/dosa/butter-roast.webp",
+  "dosamushroomroast": "/menu-images/dosa/mushroom-roast.webp",
+  "dosapaneerroast": "/menu-images/dosa/paneer-roast.webp",
+  "ravaroastravaroast": "/menu-images/rava-roast/rava-roast.webp",
+  "ravaroastravamasalroast": "/menu-images/rava-roast/rava-masal-roast.webp",
+  "ravaroastonionravaroast": "/menu-images/rava-roast/onion-rava-roast.webp",
+  "ravaroastgheeravaroast": "/menu-images/rava-roast/ghee-rava-roast.webp",
+  "ravaroastspecialravaroast": "/menu-images/rava-roast/special-rava-roast.webp",
+  "ravaroastgheeonionravaroast": "/menu-images/rava-roast/ghee-onion-rava-roast.webp",
+  "ravaroastcashewravaroast": "/menu-images/rava-roast/cashew-rava-roast.webp",
+  "uthappamuthappam": "/menu-images/uthappam/uthappam.webp",
+  "uthappamsmallonionuthappam": "/menu-images/uthappam/small-onion-uthappam.webp",
+  "uthappamgheeonionuthappam": "/menu-images/uthappam/ghee-onion-uthappam.webp",
+  "uthappamgheepodiuthappam": "/menu-images/uthappam/ghee-podi-uthappam.webp",
+  "uthappamgheeuthappam": "/menu-images/uthappam/ghee-uthappam.webp",
+  "uthappamonionuthappam": "/menu-images/uthappam/onion-uthappam.webp",
+  "uthappampodiuthappam": "/menu-images/uthappam/podi-uthappam.webp",
+  "uthappamgarlicuthappam": "/menu-images/uthappam/garlic-uthappam.webp",
+  "uthappamtomatouthappam": "/menu-images/uthappam/tomato-uthappam.webp",
+  "uthappambutteruthappam": "/menu-images/uthappam/butter-uthappam.webp",
+  "uthappamgheepodionionuthappam": "/menu-images/uthappam/ghee-podi-onion-uthappam.webp",
+  "parottachappathichappathi2pcs": "/menu-images/parotta-chappathi/chappathi.webp",
+  "parottachappathiparotta2pcs": "/menu-images/parotta-chappathi/parotta.webp",
+  "parottachappathibunparotta1pc": "/menu-images/parotta-chappathi/bun-parotta.webp",
+  "parottachappathinoolparotta1pc": "/menu-images/parotta-chappathi/nool-parotta.webp",
+  "parottachappathichillyparotta": "/menu-images/parotta-chappathi/chilly-parotta.webp",
+  "parottachappathivegkothuparotta": "/menu-images/parotta-chappathi/veg-kothu-parotta.webp",
+  "parottachappathimushroomparotta": "/menu-images/parotta-chappathi/mushroom-parotta.webp",
+  "parottachappathimethiparotta": "/menu-images/parotta-chappathi/methi-parotta.webp",
+  "parottachappathivazhaielaiparotta": "/menu-images/parotta-chappathi/vazhaielai-parotta.webp",
+  "parottachappathicoinparotta": "/menu-images/parotta-chappathi/coin-parotta.webp",
+  "parottachappathikaimaparotta": "/menu-images/parotta-chappathi/kaima-parotta.webp",
+  "mealsspecialmealsunlimited": "/menu-images/meals/special-meals-unlimited.webp",
+  "mealsmealslimited": "/menu-images/meals/meals-limited.webp",
+  "mealsminimeals": "/menu-images/meals/mini-meals.webp",
+  "tandooristarterspaneertikka": "/menu-images/tandoori-starters/paneer-tikka.webp",
+  "tandooristartersmushroomtikka": "/menu-images/tandoori-starters/mushroom-tikka.webp",
+  "tandooristartersalootikka": "/menu-images/tandoori-starters/aloo-tikka.webp",
+  "tandooristartersvegseekhkebab": "/menu-images/tandoori-starters/veg-seekh-kebab.webp",
+  "starterspaneerpepperfry": "/menu-images/starters/paneer-pepper-fry.webp",
+  "startersmushroompepperfry": "/menu-images/starters/mushroom-pepper-fry.webp",
+  "startersgobipepperfry": "/menu-images/starters/gobi-pepper-fry.webp",
+  "startersbabycornpepperfry": "/menu-images/starters/babycorn-pepper-fry.webp",
+  "starterspaneerschezwanmanchurian": "/menu-images/starters/paneer-schezwan-manchurian.webp",
+  "startersmushroomschezwanmanchurian": "/menu-images/starters/mushroom-schezwan-manchurian.webp",
+  "startersgobischezwanmanchurian": "/menu-images/starters/gobi-schezwan-manchurian.webp",
+  "starterspaneerchilly": "/menu-images/starters/paneer-chilly.webp",
+  "startersmushroomchilly": "/menu-images/starters/mushroom-chilly.webp",
+  "startersgobichilly": "/menu-images/starters/gobi-chilly.webp",
+  "startersbabycornchilly": "/menu-images/starters/babycorn-chilly.webp",
+  "starterspaneer65": "/menu-images/starters/paneer-65.webp",
+  "startersmushroom65": "/menu-images/starters/mushroom-65.webp",
+  "startersgobi65": "/menu-images/starters/gobi-65.webp",
+  "startersbabycorn65": "/menu-images/starters/babycorn-65.webp",
+  "starterspaneermanchurian": "/menu-images/starters/paneer-manchurian.webp",
+  "startersmushroommanchurian": "/menu-images/starters/mushroom-manchurian.webp",
+  "startersgobimanchurian": "/menu-images/starters/gobi-manchurian.webp",
+  "startersbabycornmanchurian": "/menu-images/starters/babycorn-manchurian.webp",
+  "starterspaneerhotpepper": "/menu-images/starters/paneer-hot-pepper.webp",
+  "startersmushroomhotpepper": "/menu-images/starters/mushroom-hot-pepper.webp",
+  "startersgobihotpepper": "/menu-images/starters/gobi-hot-pepper.webp",
+  "startersbabycornhotpepper": "/menu-images/starters/babycorn-hot-pepper.webp",
+  "starterspaneerdragon": "/menu-images/starters/paneer-dragon.webp",
+  "startersmushroomdragon": "/menu-images/starters/mushroom-dragon.webp",
+  "startersgobidragon": "/menu-images/starters/gobi-dragon.webp",
+  "startersbabycorndragon": "/menu-images/starters/babycorn-dragon.webp",
+  "soupvegclearsoup": "/menu-images/soup/veg-clear-soup.webp",
+  "souptomattosoup": "/menu-images/soup/tomatto-soup.webp",
+  "soupsweetcornsoup": "/menu-images/soup/sweet-corn-soup.webp",
+  "soupmushroomsoup": "/menu-images/soup/mushroom-soup.webp",
+  "soupchettinadsoup": "/menu-images/soup/chettinad-soup.webp",
+  "souppepperleafsoup": "/menu-images/soup/pepper-leaf-soup.webp",
+  "souphotsoursoup": "/menu-images/soup/hot-and-sour-soup.webp",
+  "soupmilagudhaniyasoup": "/menu-images/soup/milagu-dhaniya-soup.webp",
+  "souplemonwithcoriandersoup": "/menu-images/soup/lemon-with-coriander-soup.webp",
+  "soupfrenchonionsoup": "/menu-images/soup/french-onion-soup.webp",
+  "soupmanchowsoup": "/menu-images/soup/manchow-soup.webp",
+  "soupcreamofvegsoup": "/menu-images/soup/cream-of-veg-soup.webp",
+  "soupbroccolisoup": "/menu-images/soup/broccoli-soup.webp",
+  "soupcreamofmushroom": "/menu-images/soup/cream-of-mushroom.webp",
+  "varietyricecurdrice": "/menu-images/variety-rice/curd-rice.webp",
+  "varietyricesambarrice": "/menu-images/variety-rice/sambar-rice.webp",
+  "varietyricelemonrice": "/menu-images/variety-rice/lemon-rice.webp",
+  "varietyricetomatorice": "/menu-images/variety-rice/tomato-rice.webp",
+  "varietyricetamarindrice": "/menu-images/variety-rice/tamarind-rice.webp",
+  "varietyricevegchinesebiriyani": "/menu-images/variety-rice/veg-chinese-biriyani.webp",
+  "varietyricemushroomdumbiriyani": "/menu-images/variety-rice/mushroom-dum-biriyani.webp",
+  "varietyricevegdumbiriyani": "/menu-images/variety-rice/veg-dum-biriyani.webp",
+  "varietyricepaneerbiriyani": "/menu-images/variety-rice/paneer-biriyani.webp",
+  "varietyricespecialcurdrice": "/menu-images/variety-rice/special-curd-rice.webp",
+  "maincoursepaneertikkamasala": "/menu-images/main-course/paneer-tikka-masala.webp",
+  "maincoursemushroomtikkamasala": "/menu-images/main-course/mushroom-tikka-masala.webp",
+  "maincoursepaneerpallipalayam": "/menu-images/main-course/paneer-pallipalayam.webp",
+  "maincoursemushroompallipalayam": "/menu-images/main-course/mushroom-pallipalayam.webp",
+  "maincoursegobipallipalayam": "/menu-images/main-course/gobi-pallipalayam.webp",
+  "maincoursebabycornpallipalayam": "/menu-images/main-course/babycorn-pallipalayam.webp",
+  "maincoursepaneermethiapoorvaaspl": "/menu-images/main-course/paneer-methi.webp",
+  "maincoursemushroommethiapoorvaaspl": "/menu-images/main-course/mushroom-methi.webp",
+  "maincoursegobimethiapoorvaaspl": "/menu-images/main-course/gobi-methi.webp",
+  "maincoursepaneermaharanidry": "/menu-images/main-course/paneer-maharani-dry.webp",
+  "maincoursemushroommaharanidry": "/menu-images/main-course/mushroom-maharani-dry.webp",
+  "maincoursegobimaharanidry": "/menu-images/main-course/gobi-maharani-dry.webp",
+  "maincoursebabycornmaharanidry": "/menu-images/main-course/babycorn-maharani-dry.webp",
+  "maincoursepaneerchinthamani": "/menu-images/main-course/paneer-chinthamani.webp",
+  "maincoursemushroomchinthamani": "/menu-images/main-course/mushroom-chinthamani.webp",
+  "maincoursegobichithamani": "/menu-images/main-course/gobi-chithamani.webp",
+  "maincoursebabycornchithamani": "/menu-images/main-course/babycorn-chithamani.webp",
+  "maincoursepaneermutterrogangravy": "/menu-images/main-course/paneer-mutter-rogan-gravy.webp",
+  "maincoursemushroommutterrogangravy": "/menu-images/main-course/mushroom-mutter-rogan-gravy.webp",
+  "maincoursegobimutterrogangravy": "/menu-images/main-course/gobi-mutter-rogan-gravy.webp",
+  "maincoursebabycornmutterrogangravy": "/menu-images/main-course/babycorn-mutter-rogan-gravy.webp",
+  "maincoursepaneerbuttermasala": "/menu-images/main-course/paneer-butter-masala.webp",
+  "maincoursepaneerhariyali": "/menu-images/main-course/paneer-hariyali.webp",
+  "maincoursemushroomhariyali": "/menu-images/main-course/mushroom-hariyali.webp",
+  "maincoursegobihariyali": "/menu-images/main-course/gobi-hariyali.webp",
+  "maincoursebabycornhariyali": "/menu-images/main-course/babycorn-hariyali.webp",
+  "maincoursepaneerhyderabadgravy": "/menu-images/main-course/paneer-hyderabad-gravy.webp",
+  "maincoursemushroomhyderabadgravy": "/menu-images/main-course/mushroom-hyderabad-gravy.webp",
+  "maincoursegobihyderabadgravy": "/menu-images/main-course/gobi-hyderabad-gravy.webp",
+  "maincoursebabycornhyderabadgravy": "/menu-images/main-course/babycorn-hyderabad-gravy.webp",
+  "maincoursepaneerapoorvaaspecial": "/menu-images/main-course/paneer-apoorvaa-special.webp",
+  "maincoursemushroomapoorvaaspecial": "/menu-images/main-course/mushroom-apoorvaa-special.webp",
+  "maincoursegobiapoorvaaspecial": "/menu-images/main-course/gobi-apoorvaa-special.webp",
+  "maincoursebabycornapoorvaaspecial": "/menu-images/main-course/babycorn-apoorvaa-special.webp",
+  "maincoursepaneerchettinad": "/menu-images/main-course/paneer-chettinad.webp",
+  "maincoursemushroomchettinad": "/menu-images/main-course/mushroom-chettinad.webp",
+  "maincoursegobichettinad": "/menu-images/main-course/gobi-chettinad.webp",
+  "maincoursebabycornchettinad": "/menu-images/main-course/babycorn-chettinad.webp",
+  "maincoursekadaaipaneer": "/menu-images/main-course/kadaai-paneer.webp",
+  "maincoursekadaaimushroom": "/menu-images/main-course/kadaai-mushroom.webp",
+  "maincoursekadaaigobi": "/menu-images/main-course/kadaai-gobi.webp",
+  "maincoursekadaaibabycorn": "/menu-images/main-course/kadaai-babycorn.webp",
+  "maincoursekadaaiveg": "/menu-images/main-course/kadaai-veg.webp",
+  "maincoursepaneersizzler": "/menu-images/main-course/paneer-sizzler.webp",
+  "maincoursemughlaipaneer": "/menu-images/main-course/mughlai-paneer.webp",
+  "maincoursemughlaimushroom": "/menu-images/main-course/mughlai-mushroom.webp",
+  "maincoursemughlaigobi": "/menu-images/main-course/mughlai-gobi.webp",
+  "maincoursemughlaibabycorn": "/menu-images/main-course/mughlai-babycorn.webp",
+  "maincoursemonikapaneer": "/menu-images/main-course/monika-paneer.webp",
+  "maincoursemonikamushroom": "/menu-images/main-course/monika-mushroom.webp",
+  "maincoursemonikagobi": "/menu-images/main-course/monika-gobi.webp",
+  "maincoursemonikababycorn": "/menu-images/main-course/monika-babycorn.webp",
+  "tandoorirotiroti": "/menu-images/tandoori-roti/roti.webp",
+  "tandoorirotibutterroti": "/menu-images/tandoori-roti/butter-roti.webp",
+  "tandoorirotigarlicroti": "/menu-images/tandoori-roti/garlic-roti.webp",
+  "tandoorirotipulka2pcs": "/menu-images/tandoori-roti/pulka.webp",
+  "tandoorinaankulchapaneercheesenaan": "/menu-images/tandoori-naan-kulcha/paneer-cheese-naan.webp",
+  "tandoorinaankulchanaan": "/menu-images/tandoori-naan-kulcha/naan.webp",
+  "tandoorinaankulchabutternaan": "/menu-images/tandoori-naan-kulcha/butter-naan.webp",
+  "tandoorinaankulchagarlicnaan": "/menu-images/tandoori-naan-kulcha/garlic-naan.webp",
+  "tandoorinaankulchastuffednaan": "/menu-images/tandoori-naan-kulcha/stuffed-naan.webp",
+  "tandoorinaankulchakashmirinaan": "/menu-images/tandoori-naan-kulcha/kashmiri-naan.webp",
+  "tandoorinaankulchagarlicbutternaan": "/menu-images/tandoori-naan-kulcha/garlic-butter-naan.webp",
+  "tandoorinaankulchakulcha": "/menu-images/tandoori-naan-kulcha/kulcha.webp",
+  "tandoorinaankulchabutterkulcha": "/menu-images/tandoori-naan-kulcha/butter-kulcha.webp",
+  "tandoorinaankulchapaneerkulcha": "/menu-images/tandoori-naan-kulcha/paneer-kulcha.webp",
+  "tandoorinaankulchastuffedkulcha": "/menu-images/tandoori-naan-kulcha/stuffed-kulcha.webp",
+  "tandoorinaankulchagarlickulcha": "/menu-images/tandoori-naan-kulcha/garlic-kulcha.webp",
+  "ricepulaonoodlesjeerarice": "/menu-images/rice-pulao-noodles/jeera-rice.webp",
+  "ricepulaonoodlesgheerice": "/menu-images/rice-pulao-noodles/ghee-rice.webp",
+  "ricepulaonoodlesfriedrice": "/menu-images/rice-pulao-noodles/fried-rice.webp",
+  "ricepulaonoodlesmushroomfriedrice": "/menu-images/rice-pulao-noodles/mushroom-fried-rice.webp",
+  "ricepulaonoodlespaneerfriedrice": "/menu-images/rice-pulao-noodles/paneer-fried-rice.webp",
+  "ricepulaonoodlesmixfriedrice": "/menu-images/rice-pulao-noodles/mix-fried-rice.webp",
+  "ricepulaonoodlesschezwanfriedrice": "/menu-images/rice-pulao-noodles/schezwan-fried-rice.webp",
+  "ricepulaonoodlesgobifriedrice": "/menu-images/rice-pulao-noodles/gobi-fried-rice.webp",
+  "ricepulaonoodlesschezwanpaneerfriedrice": "/menu-images/rice-pulao-noodles/schezwan-paneer-fried-rice.webp",
+  "ricepulaonoodlesgarlicfriedrice": "/menu-images/rice-pulao-noodles/garlic-fried-rice.webp",
+  "ricepulaonoodlespaneerkajupulao": "/menu-images/rice-pulao-noodles/paneer-kaju-pulao.webp",
+  "ricepulaonoodlescashewpulao": "/menu-images/rice-pulao-noodles/cashew-pulao.webp",
+  "ricepulaonoodlesgreenpeaspulao": "/menu-images/rice-pulao-noodles/green-peas-pulao.webp",
+  "ricepulaonoodlesvegpulao": "/menu-images/rice-pulao-noodles/veg-pulao.webp",
+  "ricepulaonoodlesjeerapulao": "/menu-images/rice-pulao-noodles/jeera-pulao.webp",
+  "ricepulaonoodlesmushroompulao": "/menu-images/rice-pulao-noodles/mushroom-pulao.webp",
+  "ricepulaonoodlespaneerpulao": "/menu-images/rice-pulao-noodles/paneer-pulao.webp",
+  "ricepulaonoodleskashmiripulao": "/menu-images/rice-pulao-noodles/kashmiri-pulao.webp",
+  "ricepulaonoodlesvegnoodles": "/menu-images/rice-pulao-noodles/veg-noodles.webp",
+  "ricepulaonoodlesmushroomnoodles": "/menu-images/rice-pulao-noodles/mushroom-noodles.webp",
+  "ricepulaonoodlespaneernoodles": "/menu-images/rice-pulao-noodles/paneer-noodles.webp",
+  "ricepulaonoodlesmixnoodles": "/menu-images/rice-pulao-noodles/mix-noodles.webp",
+  "ricepulaonoodlesschezwannoodles": "/menu-images/rice-pulao-noodles/schezwan-noodles.webp",
+  "ricepulaonoodlesamericanchopsuey": "/menu-images/rice-pulao-noodles/american-chop-suey.webp",
+  "indianmaincoursechannamasala": "/menu-images/indian-main-course/channa-masala.webp",
+  "indianmaincoursegreenpeasmasala": "/menu-images/indian-main-course/green-peas-masala.webp",
+  "indianmaincoursevegkadaai": "/menu-images/indian-main-course/veg-kadaai.webp",
+  "indianmaincoursepeshawarigravy": "/menu-images/indian-main-course/peshawari-gravy.webp",
+  "indianmaincoursedalfry": "/menu-images/indian-main-course/dal-fry.webp",
+  "indianmaincoursethadka": "/menu-images/indian-main-course/thadka.webp",
+  "juiceapplejuice": "/menu-images/juice/apple-juice.webp",
+  "juiceorangejuice": "/menu-images/juice/orange-juice.webp",
+  "juicemadhulaijuice": "/menu-images/juice/madhulai-juice.webp",
+  "juicemadhulaipure": "/menu-images/juice/madhulai-pure.webp",
+  "juicesathukudijuice": "/menu-images/juice/sathukudi-juice.webp",
+  "juicegrapejuice": "/menu-images/juice/grape-juice.webp",
+  "juicelemonjuice": "/menu-images/juice/lemon-juice.webp",
+  "juicewatermelon": "/menu-images/juice/water-melon.webp",
+  "juicerosemilk": "/menu-images/juice/rose-milk.webp",
+  "juicebadammilk": "/menu-images/juice/badam-milk.webp",
+  "juicelimesodasweetsalt": "/menu-images/juice/lime-soda-sweetand-salt.webp",
+  "juicevirginmojito": "/menu-images/juice/virgin-mojito.webp",
+  "juiceblueberry": "/menu-images/juice/blueberry.webp",
+  "juicebluecuracao": "/menu-images/juice/blue-curacao.webp",
+  "juicelemonmint": "/menu-images/juice/lemon-mint.webp",
+  "juicebuttermilkmasala": "/menu-images/juice/butter-milk-masala.webp",
+  "juicelassi": "/menu-images/juice/lassi.webp",
+  "juicepineapple": "/menu-images/juice/pine-apple.webp",
+  "chaatcheesepavbhaji": "/menu-images/chaat/cheese-pav-bhaji.webp",
+  "chaatpannerpavbhaji": "/menu-images/chaat/panner-pav-bhaji.webp",
+  "chaatmushroompavbhaji": "/menu-images/chaat/mushroom-pav-bhaji.webp",
+  "chaatpavbhaji": "/menu-images/chaat/pav-bhaji.webp",
+  "chaatbhelpoori": "/menu-images/chaat/bhel-poori.webp",
+  "chaatmasalapoori": "/menu-images/chaat/masala-poori.webp",
+  "chaatdahipoori": "/menu-images/chaat/dahi-poori.webp",
+  "chaatpanipoori": "/menu-images/chaat/pani-poori.webp",
+  "chaatonionsamosa2pcs": "/menu-images/chaat/onion-samosa-2-pcs.webp",
+  "chaataloosamosa2pcs": "/menu-images/chaat/aloo-samosa-2-pcs.webp",
+  "chaatkachori": "/menu-images/chaat/kachori.webp",
+  "chaatsevpoori": "/menu-images/chaat/sev-poori.webp",
+  "chaatpapdichats": "/menu-images/chaat/papdi-chats.webp",
+  "chaatchennasamosa": "/menu-images/chaat/chenna-samosa.webp",
+  "chaatchennamasala": "/menu-images/chaat/chenna-masala.webp",
+  "kidsspecialfrenchfriesvegmayonnaise": "/menu-images/kids-special/french-fries.webp",
+  "kidsspecialvegnuggetstsauce": "/menu-images/kids-special/veg-nuggets.webp",
+  "kidsspecialsmileystsauce": "/menu-images/kids-special/smileys.webp",
+  "kidsspecialcutlettsaucetwopcs": "/menu-images/kids-special/cutlet-two-pcs.webp",
+  "kidsspecialvegspringrolltsauce": "/menu-images/kids-special/veg-spring-roll.webp",
+  "sandwichcornsandwich": "/menu-images/sandwich/corn-sandwich.webp",
+  "sandwichpaneersandwich": "/menu-images/sandwich/paneer-sandwich.webp",
+  "sandwichmushroomsandwich": "/menu-images/sandwich/mushroom-sandwich.webp",
+  "sandwichcheesesandwich": "/menu-images/sandwich/cheese-sandwich.webp",
+  "sandwichclassicvegsandwich": "/menu-images/sandwich/classic-veg-sandwich.webp",
+  "sandwichvegclubsandwich": "/menu-images/sandwich/veg-club-sandwich.webp",
+  "sandwichvegburger": "/menu-images/sandwich/veg-burger.webp",
+  "sandwichfriedmomos": "/menu-images/sandwich/fried-momos.webp",
+  "sandwichpaneermomos": "/menu-images/sandwich/paneer-momos.webp",
+  "sandwichmushroommomos": "/menu-images/sandwich/mushroom-momos.webp",
+  "apoorvaaspecialpastaclassicmacandcheese": "/menu-images/apoorvaa-special-pasta/classic-mac-and-cheese.webp",
+  "apoorvaaspecialpastapennearrabbiatatomato": "/menu-images/apoorvaa-special-pasta/penne-arrabbiata.webp",
+  "apoorvaaspecialpastachefsplspaghettipasta": "/menu-images/apoorvaa-special-pasta/chef-spl-spaghetti-pasta.webp",
+  "apoorvaaspecialpastamaggienoodlesapospl": "/menu-images/apoorvaa-special-pasta/maggie-noodles.webp",
+  "apoorvaaspecialpastaplainmaggie": "/menu-images/apoorvaa-special-pasta/plain-maggie.webp",
+  "beveragesfiltercoffee": "/menu-images/beverages/filter-coffee.webp",
+  "beveragestea": "/menu-images/beverages/tea.webp",
+  "beveragesmasalatea": "/menu-images/beverages/masala-tea.webp",
+  "beveragesgingertea": "/menu-images/beverages/ginger-tea.webp",
+  "beveragesgreentea": "/menu-images/beverages/green-tea.webp",
+  "beverageslemonwithminttea": "/menu-images/beverages/lemon-with-mint-tea.webp",
+  "beveragesblacktea": "/menu-images/beverages/black-tea.webp",
+  "beveragesblackcoffee": "/menu-images/beverages/black-coffee.webp",
+  "beveragespanankalkandumilk": "/menu-images/beverages/panan-kalkandu-milk.webp",
+  "beveragessukkupaal": "/menu-images/beverages/sukku-paal.webp",
+  "beverageshotbadammilk": "/menu-images/beverages/hot-badam-milk.webp",
+  "beveragesbadamkheer": "/menu-images/beverages/badam-kheer.webp",
+  "beverageshorlicks": "/menu-images/beverages/horlicks.webp",
+  "beveragesboost": "/menu-images/beverages/boost.webp",
+  "beveragesragimalt": "/menu-images/beverages/ragi-malt.webp",
+  "snacksvazhaikkaibaji": "/menu-images/snacks/vazhaikkai-baji.webp",
+  "snacksonionbaji": "/menu-images/snacks/onion-baji.webp",
+  "snacksmilagaibaji": "/menu-images/snacks/milagai-baji.webp",
+  "snacksparuppuvada": "/menu-images/snacks/paruppu-vada.webp",
+  "snacksbonda": "/menu-images/snacks/bonda.webp",
+  "snacksmasalbonda": "/menu-images/snacks/masal-bonda.webp",
+  "snacksarisibonda": "/menu-images/snacks/arisi-bonda.webp",
+  "snackspasiparuppubonda": "/menu-images/snacks/pasiparuppu-bonda.webp",
+  "snackssundalpayir": "/menu-images/snacks/sundal-or-payir.webp",
+  "icecreamsmilkshakekulfi": "/menu-images/ice-creams-milk-shake/kulfi.webp",
+  "icecreamsmilkshakechocolatemilkshake": "/menu-images/ice-creams-milk-shake/chocolate-milk-shake.webp",
+  "icecreamsmilkshakebutterscotchmilkshake": "/menu-images/ice-creams-milk-shake/butterscotch-milk-shake.webp",
+  "icecreamsmilkshakepistamilkshake": "/menu-images/ice-creams-milk-shake/pista-milk-shake.webp",
+  "icecreamsmilkshakestrawberrymilkshake": "/menu-images/ice-creams-milk-shake/strawberry-milk-shake.webp",
+  "icecreamsmilkshakevenillamilkshake": "/menu-images/ice-creams-milk-shake/venilla-milk-shake.webp",
+  "icecreamsmilkshakemangomilkshake": "/menu-images/ice-creams-milk-shake/mango-milk-shake.webp"
+};
+
 function getDishImage(categoryId: string, name: string): string {
-  const n = name.toLowerCase();
-
-  // Tiffin & Snacks
-  if (n.includes("idly") || n.includes("idli")) return "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("vada")) return "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("pongal")) return "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("poori") || n.includes("puri")) return "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("kesari")) return "https://images.unsplash.com/photo-1541832676-9b763b0239ab?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("upma")) return "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("appam") || n.includes("paniyaram") || n.includes("idiyappam")) return "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop";
-
-  // Dosa & Rava & Uthappam
-  if (categoryId === "dosa" || categoryId === "rava-roast" || categoryId === "uthappam") {
-    return "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop";
+  const key = (categoryId + '_' + name).toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (realDishImageMap[key]) {
+    return realDishImageMap[key];
   }
-
-  // Parotta & Chappathi
-  if (n.includes("parotta")) return "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("chappathi") || n.includes("pulka") || n.includes("roti")) return "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("naan") || n.includes("kulcha")) return "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=800&auto=format&fit=crop";
-
-  // Meals & Rice
-  if (categoryId === "meals") return "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("biriyani") || n.includes("biryani")) return "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("rice") || n.includes("pulao")) return "https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("noodles") || n.includes("chop suey")) return "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop";
-
-  // Starters & Tandoor
-  if (n.includes("tikka") || n.includes("kebab")) return "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=800&auto=format&fit=crop";
-  if (categoryId === "starters" || categoryId === "tandoori-starters") {
-    return "https://images.unsplash.com/photo-1610057099443-f6893282423a?q=80&w=800&auto=format&fit=crop";
-  }
-
-  // Soups
-  if (categoryId === "soup") return "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop";
-
-  // Gravies & Main Course
-  if (categoryId === "main-course" || categoryId === "indian-main-course") {
-    if (n.includes("paneer")) return "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=800&auto=format&fit=crop";
-    if (n.includes("dal") || n.includes("thadka")) return "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop";
-    return "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop";
-  }
-
-  // Beverages
-  if (n.includes("coffee")) return "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("tea") || n.includes("chai")) return "https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop";
-  if (n.includes("milk") || n.includes("boost") || n.includes("horlicks")) return "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800&auto=format&fit=crop";
-
-  // Juices & Shakes
-  if (categoryId === "juice") return "https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=800&auto=format&fit=crop";
-  if (categoryId === "ice-creams-milk-shake") return "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop";
-
-  // Chaat & Snacks
-  if (categoryId === "chaat") return "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop";
-  if (categoryId === "snacks") return "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop";
-
-  // Kids & Sandwich & Pasta
-  if (categoryId === "kids-special") return "https://images.unsplash.com/photo-1576107232684-1279f3908594?q=80&w=800&auto=format&fit=crop";
-  if (categoryId === "sandwich") {
-    if (n.includes("momos")) return "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop";
-    return "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=800&auto=format&fit=crop";
-  }
-  if (categoryId === "apoorvaa-special-pasta") return "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=800&auto=format&fit=crop";
-
-  return categoryHeroImages[categoryId] || "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop";
+  return categoryHeroImages[categoryId] || '/logo2.png';
 }
 
 // -------------------------------------------------------------

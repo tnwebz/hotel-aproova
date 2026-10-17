@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { usePathname } from "next/navigation";
 import { useOrderList } from "@/context/OrderListContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
@@ -22,6 +23,7 @@ import {
 } from "lucide-react";
 
 export default function OrderListModal() {
+  const pathname = usePathname();
   const {
     items,
     updateQuantity,
@@ -44,7 +46,7 @@ export default function OrderListModal() {
   const [orderTime, setOrderTime] = useState<string>("");
   const [viewMode, setViewMode] = useState<"QR" | "RECEIPT">("QR");
 
-  // Generate URL for waiter scan
+  // Generate URL for waiter scan (Hook must be called before any conditional return)
   const qrUrl = useMemo(() => {
     if (typeof window === "undefined" || !orderToken) return "";
 
@@ -70,6 +72,7 @@ export default function OrderListModal() {
     }
   }, [orderToken, orderTime, tableNumber, customerNotes, items, totalPrice]);
 
+  if (pathname?.startsWith("/admin")) return null;
   if (!isOrderModalOpen) return null;
 
   const handleFinishOrder = () => {

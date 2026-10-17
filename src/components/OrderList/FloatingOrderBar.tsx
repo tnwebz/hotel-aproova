@@ -1,12 +1,15 @@
 "use client";
 
 import { useOrderList } from "@/context/OrderListContext";
+import { usePathname } from "next/navigation";
 import { ShoppingBag, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FloatingOrderBar() {
+  const pathname = usePathname();
   const { totalCount, totalPrice, totalSavings, setIsOrderModalOpen } = useOrderList();
 
+  if (pathname?.startsWith("/admin")) return null;
   if (totalCount === 0) return null;
 
   return (

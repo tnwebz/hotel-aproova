@@ -37,9 +37,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} h-full antialiased`}
+      className={`${inter.variable} ${poppins.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-background text-foreground selection:bg-primary/20">
+      <body className="min-h-screen flex flex-col font-sans bg-background text-foreground selection:bg-primary/20">
         <OrderListProvider>
           <MenuDataProvider>
             <SmoothScroll>

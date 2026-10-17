@@ -8,11 +8,13 @@ export const STORAGE_BUCKET = "menu-images";
  */
 export function getStorageImageUrl(imagePath?: string | null): string {
   if (!imagePath) return "";
-  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://") || imagePath.startsWith("/menu-images/")) {
     return imagePath;
   }
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  if (!supabaseUrl) return "";
+  if (!supabaseUrl) {
+    return imagePath.startsWith("/") ? imagePath : `/menu-images/${imagePath}`;
+  }
   return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath.replace(/^\//, "")}`;
 }
 
