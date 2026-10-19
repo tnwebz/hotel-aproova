@@ -17,7 +17,7 @@ export function getStorageImageUrl(imagePath?: string | null): string {
   
   // Custom admin uploaded photo in Supabase bucket
   if (imagePath.startsWith("custom_uploads/") || imagePath.includes("/main.webp")) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://oleqbctgwdxpfxqdhgff.supabase.co";
     if (supabaseUrl) {
       return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath.replace(/^\//, "")}`;
     }

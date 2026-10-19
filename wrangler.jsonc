@@ -17,6 +17,7 @@
     }
   },
   "vars": {
+    "ADMIN_PASSWORD": "apoorvaa@2026",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZXFiY3Rnd2R4cGZ4cWRoZ2ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzA3MjEsImV4cCI6MjEwNzEwNjcyMX0.7WtFHnQXhFnCc02T7icnrNUJWgXQeMYsKFmLpv1pLQs",
     "NEXT_PUBLIC_SUPABASE_URL": "https://oleqbctgwdxpfxqdhgff.supabase.co",
     "NODE_VERSION": "20"
