@@ -15,10 +15,12 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ adminEmail }) => {
 
   const handleLogout = async () => {
     try {
+      await fetch("/api/admin-auth", { method: "DELETE" });
       await signOutAdmin();
-      router.push("/admin/login");
     } catch (err) {
-      console.error("Logout failed", err);
+      console.error("Logout notice:", err);
+    } finally {
+      router.replace("/admin-access/login");
     }
   };
 

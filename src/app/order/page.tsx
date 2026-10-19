@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ShoppingBag,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -29,6 +30,7 @@ interface DecodedOrder {
   time: string;
   table?: string;
   notes?: string;
+  allergic?: string;
   items: DecodedOrderItem[];
   total: number;
 }
@@ -60,6 +62,7 @@ function OrderContent() {
     const time = searchParams.get("time") || new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
     const table = searchParams.get("table") || undefined;
     const notes = searchParams.get("notes") || undefined;
+    const allergic = searchParams.get("allergic") || undefined;
     const total = parseFloat(searchParams.get("total") || "0");
 
     const rawItems = searchParams.get("items");
@@ -78,6 +81,7 @@ function OrderContent() {
         time,
         table,
         notes,
+        allergic,
         items,
         total: total || items.reduce((acc, it) => acc + it.price * it.quantity, 0),
       });
@@ -189,6 +193,51 @@ function OrderContent() {
             <span className="text-zinc-600">
               Total Items: <strong className="text-zinc-900">{order.items.reduce((a, b) => a + b.quantity, 0)}</strong>
             </span>
+          </div>
+        </div>
+
+        {/* Waiter & Kitchen Attention Card - Red Border Box */}
+        <div className="rounded-2xl border-2 border-red-500 bg-red-50/95 p-4 space-y-3 shadow-xs">
+          <div className="flex items-center justify-between pb-2 border-b border-red-200">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-red-600 text-white flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-3.5 h-3.5 stroke-[2.5]" />
+              </div>
+              <span className="text-xs font-black uppercase tracking-wider text-red-900">
+                Waiter & Kitchen Alert: Table, Notes & Allergy
+              </span>
+            </div>
+            <span className="px-2.5 py-0.5 rounded-lg bg-white border border-red-300 text-xs font-black text-red-900 shadow-2xs">
+              {order.table ? `Table #${order.table}` : "Dine-In"}
+            </span>
+          </div>
+
+          <div className="space-y-2 text-xs">
+            {/* Allergy alert */}
+            <div className={`p-2.5 rounded-xl border flex items-start gap-2 ${
+              order.allergic?.trim()
+                ? "bg-red-100/90 border-red-400 text-red-950 font-bold"
+                : "bg-white/80 border-red-200 text-zinc-700"
+            }`}>
+              <span className="px-1.5 py-0.5 rounded bg-red-600 text-white text-[10px] font-black uppercase tracking-wider shrink-0">
+                Allergy Alert
+              </span>
+              <span className={order.allergic?.trim() ? "text-red-950 font-black text-xs" : "text-zinc-500 text-xs italic"}>
+                {order.allergic?.trim() ? order.allergic : "No specific allergies reported by customer"}
+              </span>
+            </div>
+
+            {/* Cooking Notes */}
+            {order.notes?.trim() && (
+              <div className="p-2.5 rounded-xl bg-white/80 border border-red-200 flex items-start gap-2 text-zinc-800">
+                <span className="px-1.5 py-0.5 rounded bg-amber-600 text-white text-[10px] font-black uppercase tracking-wider shrink-0">
+                  Cooking Notes
+                </span>
+                <span className="italic text-zinc-800 font-medium">
+                  &ldquo;{order.notes}&rdquo;
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

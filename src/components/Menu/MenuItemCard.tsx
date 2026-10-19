@@ -49,6 +49,7 @@ export default function MenuItemCard({
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!isAvailable) return;
     addItem({
       id: itemId,
       name,
@@ -62,6 +63,7 @@ export default function MenuItemCard({
 
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!isAvailable) return;
     updateQuantity(itemId, 1);
   };
 
@@ -80,7 +82,7 @@ export default function MenuItemCard({
         "bg-card rounded-2xl sm:rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col group relative",
         isAvailable
           ? "border-border/60 shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] hover:border-amber-500/50 hover:-translate-y-0.5"
-          : "border-border/40 bg-card/60 opacity-80"
+          : "border-border/40 bg-zinc-100/60 dark:bg-zinc-900/40 opacity-75 grayscale-[20%]"
       )}
     >
       {/* Top Half: Image */}
@@ -118,22 +120,21 @@ export default function MenuItemCard({
           )}
         </div>
 
-        {/* Availability Timing Tag */}
-        {timingLabel && (
+        {/* Availability Timing Tag or Out of Stock Tag */}
+        {!isAvailable ? (
           <div className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10">
-            <span
-              className={cn(
-                "text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-md shadow-sm",
-                isAvailable
-                  ? "bg-black/60 text-emerald-300 border border-emerald-400/30"
-                  : "bg-black/70 text-amber-300 border border-amber-400/40"
-              )}
-            >
+            <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-600/95 text-white backdrop-blur-md shadow-sm border border-rose-400/40 uppercase tracking-wider">
+              {availabilityText || "Out of Stock"}
+            </span>
+          </div>
+        ) : timingLabel ? (
+          <div className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10">
+            <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-md shadow-sm bg-black/60 text-emerald-300 border border-emerald-400/30">
               <Clock size={9} />
               <span className="line-clamp-1">{timingLabel}</span>
             </span>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Bottom Half: Details */}
@@ -214,8 +215,15 @@ export default function MenuItemCard({
               </div>
             )
           ) : (
-            <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full text-amber-800 bg-amber-50 border border-amber-200">
-              {availabilityText || "Next Shift"}
+            <span
+              className={cn(
+                "text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full border shadow-2xs tracking-wider",
+                availabilityText === "Out of Stock"
+                  ? "text-rose-700 bg-rose-50 border-rose-200"
+                  : "text-amber-800 bg-amber-50 border-amber-200"
+              )}
+            >
+              {availabilityText || "Out of Stock"}
             </span>
           )}
         </div>

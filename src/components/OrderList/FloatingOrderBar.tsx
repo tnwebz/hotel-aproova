@@ -9,7 +9,7 @@ export default function FloatingOrderBar() {
   const pathname = usePathname();
   const { totalCount, totalPrice, totalSavings, setIsOrderModalOpen } = useOrderList();
 
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/admin-access") || pathname?.startsWith("/order") || pathname?.startsWith("/waiter")) return null;
   if (totalCount === 0) return null;
 
   return (

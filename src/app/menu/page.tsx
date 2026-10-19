@@ -12,6 +12,7 @@ import {
   MEAL_PERIOD_CONFIGS,
   MealPeriod,
   getAvailabilityDisplay,
+  isMealPeriodMatch,
 } from "@/data/mealPeriods";
 import { cn } from "@/lib/utils";
 
@@ -77,7 +78,7 @@ function MenuContent() {
     return menuData
       .map((cat) => {
         const matchingItems = cat.items.filter((item) => {
-          return item.mealPeriods.includes(activeMeal);
+          return isMealPeriodMatch(item.mealPeriods, activeMeal);
         });
 
         return {
@@ -86,7 +87,7 @@ function MenuContent() {
         };
       })
       .filter((cat) => cat.items.length > 0);
-  }, [activeMeal]);
+  }, [activeMeal, menuData]);
 
   // Active category object
   const activeCategoryObj = useMemo(() => {

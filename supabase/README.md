@@ -8,11 +8,37 @@ This directory contains version-controlled SQL files to initialize and migrate t
 
 ```
 supabase/
-├── schema.sql     # Database tables, FKs, CHECK constraints, indexes, triggers & RLS policies
-├── storage.sql    # Storage bucket configuration ('menu-images') & storage RLS policies
-├── seed.sql       # Canonical seed dataset: 23 categories, 306 menu items & meal-period mappings
-└── README.md      # Reproduction & deployment instructions
+├── full_replication.sql # 🔥 Complete ALL-IN-ONE script (Schema + Storage + 306 Items Seed)
+├── schema.sql           # Database tables, FKs, CHECK constraints, indexes, triggers & RLS policies
+├── storage.sql          # Storage bucket configuration ('menu-images') & storage RLS policies
+├── seed.sql             # Canonical seed dataset: 23 categories, 306 menu items & meal-period mappings
+└── README.md            # Reproduction & deployment instructions
 ```
+
+---
+
+## ⚡ Super-Fast Turnkey Replication (1-Step)
+
+When replicating to a new Supabase account:
+
+### Method A: Single-Click SQL Editor (Recommended)
+1. Open the target Supabase Dashboard -> **SQL Editor**.
+2. Copy and paste the entire contents of [`supabase/full_replication.sql`](file:///n:/NITHISH/projects/freelance%20tnwebz/menucard%20hotel/supabase/full_replication.sql).
+3. Click **RUN**.
+4. In under 5 seconds, all tables, extensions, RLS policies, storage bucket (`menu-images`), and all 306 menu products will be created and live!
+
+### Method B: Automated CLI Script
+1. Update `.env.local` with the new project credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://<your-new-project-ref>.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+   SUPABASE_SERVICE_ROLE_KEY=eyJ... (optional, for admin DDL)
+   ```
+2. Run:
+   ```bash
+   npm run db:replicate
+   ```
+3. The script verifies and reports database and bucket status immediately!
 
 ---
 

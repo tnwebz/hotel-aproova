@@ -1,7 +1,7 @@
 import { createClient } from "./client";
 import { getStorageImageUrl } from "./storage";
 import { DbCategory, DbMenuItem, AdminProductFormValues } from "@/types/database";
-import { MenuCategory, MenuItem } from "@/data/menu";
+import { MenuCategory, MenuItem, categoryHeroImages, realDishImageMap } from "@/data/menu";
 import { MealPeriod, AvailabilityType } from "@/data/mealPeriods";
 import { BadgeType } from "@/components/Menu/MenuItemCard";
 
@@ -13,23 +13,23 @@ const categoryDefaultImages: Record<string, string> = {
   "uthappam": "/menu-images/uthappam/butter-uthappam.webp",
   "parotta-chappathi": "/menu-images/parotta-chappathi/bun-parotta.webp",
   "meals": "/menu-images/meals/meals-limited.webp",
-  "tandoori-starters": "/menu-images/tandoori-starters/aloo-tikka.webp",
-  "starters": "/menu-images/starters/babycorn-65.webp",
-  "soup": "/menu-images/soup/broccoli-soup.webp",
+  "tandoori-starters": "/menu-images/tandoori-starters/paneer-tikka.webp",
+  "starters": "/menu-images/starters/paneer-pepper-fry.webp",
+  "soup": "/menu-images/soup/veg-clear-soup.webp",
   "variety-rice": "/menu-images/variety-rice/curd-rice.webp",
-  "main-course": "/menu-images/main-course/babycorn-apoorvaa-special.webp",
-  "tandoori-roti": "/menu-images/tandoori-roti/butter-roti.webp",
-  "tandoori-naan-kulcha": "/menu-images/tandoori-naan-kulcha/butter-kulcha.webp",
-  "rice-pulao-noodles": "/menu-images/rice-pulao-noodles/american-chop-suey.webp",
+  "main-course": "/menu-images/main-course/paneer-tikka-masala.webp",
+  "tandoori-roti": "/menu-images/tandoori-roti/roti.webp",
+  "tandoori-naan-kulcha": "/menu-images/tandoori-naan-kulcha/paneer-cheese-naan.webp",
+  "rice-pulao-noodles": "/menu-images/rice-pulao-noodles/jeera-rice.webp",
   "indian-main-course": "/menu-images/indian-main-course/channa-masala.webp",
   "juice": "/menu-images/juice/apple-juice.webp",
-  "chaat": "/menu-images/chaat/aloo-samosa-2-pcs.webp",
-  "kids-special": "/menu-images/kids-special/cutlet-two-pcs.webp",
-  "sandwich": "/menu-images/sandwich/cheese-sandwich.webp",
-  "apoorvaa-special-pasta": "/menu-images/apoorvaa-special-pasta/chef-spl-spaghetti-pasta.webp",
-  "beverages": "/menu-images/beverages/badam-kheer.webp",
-  "snacks": "/menu-images/snacks/arisi-bonda.webp",
-  "ice-creams-milk-shake": "/menu-images/ice-creams-milk-shake/butterscotch-milk-shake.webp",
+  "chaat": "/menu-images/chaat/cheese-pav-bhaji.webp",
+  "kids-special": "/menu-images/kids-special/french-fries.webp",
+  "sandwich": "/menu-images/sandwich/corn-sandwich.webp",
+  "apoorvaa-special-pasta": "/menu-images/apoorvaa-special-pasta/classic-mac-and-cheese.webp",
+  "beverages": "/menu-images/beverages/filter-coffee.webp",
+  "snacks": "/menu-images/snacks/vazhaikkai-baji.webp",
+  "ice-creams-milk-shake": "/menu-images/ice-creams-milk-shake/kulfi.webp",
 };
 
 export interface AdminMenuItemWithDetails extends DbMenuItem {
@@ -84,6 +84,15 @@ export async function fetchPublicMenu(): Promise<MenuCategory[]> {
     const startTimeFormatted = item.start_time ? item.start_time.substring(0, 5) : undefined;
     const endTimeFormatted = item.end_time ? item.end_time.substring(0, 5) : undefined;
 
+    // Resolve authoritative authentic image:
+    // 1. If admin uploaded custom image or image_path is provided, resolve via getStorageImageUrl
+    // 2. Otherwise fall back to realDishImageMap or local category image
+    let resolvedImage = item.image_path ? getStorageImageUrl(item.image_path) : "";
+    if (!resolvedImage || resolvedImage.includes("unsplash.com")) {
+      const cleanKey = (cat.slug + item.name).toLowerCase().replace(/[^a-z0-9]/g, "");
+      resolvedImage = realDishImageMap[cleanKey] || categoryDefaultImages[cat.slug] || "/logo2.png";
+    }
+
     const publicItem: MenuItem = {
       id: item.legacy_id || item.id,
       name: item.name,
@@ -99,9 +108,7 @@ export async function fetchPublicMenu(): Promise<MenuCategory[]> {
       mealPeriods: mealPeriods.length > 0 ? mealPeriods : ["ALL_DAY"],
       isVeg: true,
       isAvailable: item.is_available,
-      image: item.image_path
-        ? getStorageImageUrl(item.image_path)
-        : categoryDefaultImages[cat.slug] || "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=600&auto=format&fit=crop",
+      image: resolvedImage,
       badges: (item.badge_tags || []) as BadgeType[],
     };
 
@@ -121,10 +128,16 @@ export async function fetchPublicMenu(): Promise<MenuCategory[]> {
     const catMealPeriodsSet = new Set<MealPeriod>();
     itemsInCat.forEach((it) => it.mealPeriods.forEach((mp) => catMealPeriodsSet.add(mp)));
 
+    // Ensure category hero image uses real curated asset from /menu-images/ instead of stale Unsplash
+    const curatedHero = categoryHeroImages[cat.slug] || categoryDefaultImages[cat.slug] || "/logo2.png";
+    const heroImage = (cat.hero_image && !cat.hero_image.includes("unsplash.com"))
+      ? cat.hero_image
+      : curatedHero;
+
     return {
       id: cat.slug,
       name: cat.name,
-      heroImage: cat.hero_image || categoryDefaultImages[cat.slug] || "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=1200&auto=format&fit=crop",
+      heroImage,
       defaultMealPeriods: Array.from(catMealPeriodsSet),
       availabilityType: defaultAvailability,
       startTime,
@@ -358,6 +371,11 @@ export async function saveAdminMenuItem(
     }
   }
 
+  // Trigger immediate live refresh across active client sessions
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("hotel_apoorvaa_menu_refresh"));
+  }
+
   return savedId as string;
 }
 
@@ -373,6 +391,10 @@ export async function toggleMenuItemAvailability(id: string, isAvailable: boolea
 
   if (error) {
     throw new Error(`Failed to update status: ${error.message}`);
+  }
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("hotel_apoorvaa_menu_refresh"));
   }
 }
 
@@ -390,6 +412,10 @@ export async function deleteMenuItem(id: string): Promise<void> {
 
   if (error) {
     throw new Error(`Failed to delete menu item: ${error.message}`);
+  }
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("hotel_apoorvaa_menu_refresh"));
   }
 }
 

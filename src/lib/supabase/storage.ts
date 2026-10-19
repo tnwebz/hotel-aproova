@@ -3,45 +3,64 @@ import { createClient } from "./client";
 export const STORAGE_BUCKET = "menu-images";
 
 /**
- * Returns a full public URL for a relative storage path (e.g. "tiffin-kesari/main.webp")
- * or passes through existing absolute URLs (such as unsplash placeholders)
+ * Returns the image URL for an item.
+ * - If the image is a custom admin upload (starts with "custom_uploads/" or has "/main.webp"),
+ *   it resolves from the Supabase Storage bucket.
+ * - For all standard menu items, it loads the real, authentic image from the local
+ *   repository (/menu-images/...) avoiding stale Supabase bucket assets as instructed.
  */
 export function getStorageImageUrl(imagePath?: string | null): string {
   if (!imagePath) return "";
   if (imagePath.startsWith("http://") || imagePath.startsWith("https://") || imagePath.startsWith("/menu-images/")) {
     return imagePath;
   }
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  if (!supabaseUrl) {
-    return imagePath.startsWith("/") ? imagePath : `/menu-images/${imagePath}`;
+  
+  // Custom admin uploaded photo in Supabase bucket
+  if (imagePath.startsWith("custom_uploads/") || imagePath.includes("/main.webp")) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+    if (supabaseUrl) {
+      return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath.replace(/^\//, "")}`;
+    }
   }
-  return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath.replace(/^\//, "")}`;
+
+  // Real local repository image from github
+  return imagePath.startsWith("/") ? imagePath : `/menu-images/${imagePath}`;
 }
 
 /**
- * Compresses an image client-side using HTML5 Canvas.
- * Max width: 1200px, quality: 0.85, outputs WebP blob.
+ * Compresses any image client-side using HTML5 Canvas.
+ * Automatically scales down to max dimension 1280px and compresses to ~250-300KB WebP.
+ * Handles ANY size input file (e.g. 10MB-25MB mobile camera photos) seamlessly.
  */
-export async function compressImage(file: File, maxWidth = 1200, quality = 0.85): Promise<Blob> {
+export async function compressImage(
+  file: File | Blob,
+  maxDimension = 1280,
+  maxSizeBytes = 350 * 1024
+): Promise<File> {
+  if (typeof window === "undefined") {
+    return file as File;
+  }
+
   return new Promise((resolve, reject) => {
-    // If not in browser environment, return raw file
-    if (typeof window === "undefined" || !window.document) {
-      resolve(file);
-      return;
-    }
+    const img = document.createElement("img");
+    const objectUrl = URL.createObjectURL(file);
+    img.src = objectUrl;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target?.result as string;
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      try {
+        let width = img.naturalWidth || img.width;
+        let height = img.naturalHeight || img.height;
 
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
+        // Scale down to maxDimension while maintaining aspect ratio
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
         }
 
         const canvas = document.createElement("canvas");
@@ -50,57 +69,79 @@ export async function compressImage(file: File, maxWidth = 1200, quality = 0.85)
 
         const ctx = canvas.getContext("2d");
         if (!ctx) {
-          resolve(file);
+          resolve(file as File);
           return;
         }
 
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Prefer WebP export
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              resolve(blob);
-            } else {
-              resolve(file);
-            }
-          },
-          "image/webp",
-          quality
-        );
-      };
-      img.onerror = (error) => reject(error);
+        const baseName = (file as File).name
+          ? (file as File).name.replace(/\.[^/.]+$/, "")
+          : "product-image";
+
+        // Iteratively adjust quality to ensure file stays under target ~300-350KB
+        const attemptCompression = (quality: number) => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file as File);
+                return;
+              }
+
+              if (blob.size <= maxSizeBytes || quality <= 0.45) {
+                const compressedFile = new File([blob], `${baseName}.webp`, {
+                  type: "image/webp",
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                // Step down quality
+                attemptCompression(Math.max(0.4, quality - 0.15));
+              }
+            },
+            "image/webp",
+            quality
+          );
+        };
+
+        // Start at high quality 0.82
+        attemptCompression(0.82);
+      } catch (err) {
+        reject(err);
+      }
     };
-    reader.onerror = (error) => reject(error);
+
+    img.onerror = (error) => {
+      URL.revokeObjectURL(objectUrl);
+      reject(error);
+    };
   });
 }
 
 /**
  * Uploads a product image directly to Supabase Storage.
+ * Automatically resizes & compresses any input file to ~300KB WebP.
  * Stores under `menu-images/{itemKey}/main.webp`
  * Returns the relative path for portable database storage.
  */
 export async function uploadProductImage(file: File, itemKey: string): Promise<string> {
   const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
-  if (!allowedTypes.includes(file.type)) {
+  if (file.type && !allowedTypes.includes(file.type)) {
     throw new Error("Invalid file type. Please upload a JPEG, PNG, or WebP image.");
-  }
-
-  // Max 5MB raw
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error("File size exceeds 5 MB limit.");
   }
 
   const supabase = createClient();
   const safeKey = itemKey.replace(/[^a-zA-Z0-9_-]/g, "_").toLowerCase() || "item";
-  const filePath = `${safeKey}/main.webp`;
+  const filePath = `custom_uploads/${safeKey}/main.webp`;
 
-  // Compress image
-  const compressedBlob = await compressImage(file);
+  // Automatically compress to ~250-300KB WebP
+  const compressedFile = await compressImage(file);
 
   const { error } = await supabase.storage
     .from(STORAGE_BUCKET)
-    .upload(filePath, compressedBlob, {
+    .upload(filePath, compressedFile, {
       contentType: "image/webp",
       upsert: true,
     });

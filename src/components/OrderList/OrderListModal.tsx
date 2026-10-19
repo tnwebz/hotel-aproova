@@ -20,6 +20,7 @@ import {
   ListOrdered,
   Sparkles,
   Share2,
+  AlertTriangle,
 } from "lucide-react";
 
 export default function OrderListModal() {
@@ -37,6 +38,8 @@ export default function OrderListModal() {
     setTableNumber,
     customerNotes,
     setCustomerNotes,
+    allergicNotes,
+    setAllergicNotes,
     isOrderModalOpen,
     setIsOrderModalOpen,
   } = useOrderList();
@@ -56,6 +59,7 @@ export default function OrderListModal() {
         time: orderTime,
         table: tableNumber?.trim() || undefined,
         notes: customerNotes?.trim() || undefined,
+        allergic: allergicNotes?.trim() || undefined,
         items: items.map((i) => ({
           id: i.id,
           name: i.name,
@@ -70,9 +74,9 @@ export default function OrderListModal() {
     } catch (e) {
       return `${window.location.origin}/order?token=${orderToken}&total=${totalPrice}`;
     }
-  }, [orderToken, orderTime, tableNumber, customerNotes, items, totalPrice]);
+  }, [orderToken, orderTime, tableNumber, customerNotes, allergicNotes, items, totalPrice]);
 
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/admin-access") || pathname?.startsWith("/order") || pathname?.startsWith("/waiter")) return null;
   if (!isOrderModalOpen) return null;
 
   const handleFinishOrder = () => {
@@ -233,6 +237,39 @@ export default function OrderListModal() {
                   </div>
                 )}
 
+                {/* Waiter Notice: Table, Cooking Notes & Allergic in Red Border Box */}
+                <div className="p-3.5 rounded-2xl border-2 border-red-500 bg-red-50/95 dark:bg-red-950/40 text-red-950 dark:text-red-200 space-y-2 shadow-xs">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-red-200 dark:border-red-800/60">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-red-700 dark:text-red-400 flex items-center gap-1.5">
+                      <AlertTriangle size={13} className="text-red-600 dark:text-red-400 shrink-0" />
+                      Waiter Note: Table, Notes & Allergy
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-[11px] font-extrabold text-red-900 dark:text-red-200">
+                      {tableNumber ? `Table: ${tableNumber}` : "Dine-In"}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1.5 text-xs">
+                    {customerNotes && (
+                      <div className="flex items-start gap-1.5">
+                        <span className="font-bold text-red-800 dark:text-red-300 shrink-0">Notes:</span>
+                        <span className="font-medium text-red-950 dark:text-red-100 italic">
+                          &ldquo;{customerNotes}&rdquo;
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex items-start gap-1.5 bg-white/90 dark:bg-red-950/60 p-2 rounded-xl border border-red-400/60">
+                      <span className="font-black text-red-700 dark:text-red-400 shrink-0 uppercase tracking-wide text-[10px]">
+                        ⚠️ Allergy Alert:
+                      </span>
+                      <span className="font-extrabold text-red-900 dark:text-red-100">
+                        {allergicNotes?.trim() ? allergicNotes : "None reported"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Waiter Presentation Banner & Actions */}
                 <div className="flex flex-col gap-2 pt-1">
                   <div className="w-full py-3 px-4 rounded-xl bg-slate-900 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md">
@@ -308,6 +345,20 @@ export default function OrderListModal() {
                       className="w-full px-3 py-1.5 bg-muted/60 border border-border/80 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                   </div>
+                </div>
+
+                {/* Allergic / Dietary Alert Box at the Top */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-[11px] font-bold text-red-700 dark:text-red-400 flex items-center gap-1">
+                    <AlertTriangle size={11} className="text-red-600 dark:text-red-400" /> Allergies / Dietary Alert (Important)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Nut allergy, lactose intolerant, no garlic..."
+                    value={allergicNotes}
+                    onChange={(e) => setAllergicNotes(e.target.value)}
+                    className="w-full px-3 py-1.5 bg-red-50/50 dark:bg-red-950/20 border border-red-300 dark:border-red-800 rounded-xl text-xs font-medium text-red-950 dark:text-red-200 placeholder:text-red-400/70 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  />
                 </div>
 
                 {/* Items List */}

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { menuData } from "@/data/menu";
-import { MealPeriod, MEAL_PERIOD_CONFIGS } from "@/data/mealPeriods";
+import { MealPeriod, MEAL_PERIOD_CONFIGS, isMealPeriodMatch } from "@/data/mealPeriods";
 import { Utensils, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CategorySliderProps {
@@ -20,8 +20,7 @@ export default function CategorySlider({ activeMeal = "LUNCH" }: CategorySliderP
   const displayedCategories = menuData
     .map((cat) => {
       const items = cat.items.filter((item) => {
-        if (activeMeal === "ALL") return true;
-        return item.mealPeriods.includes(activeMeal);
+        return isMealPeriodMatch(item.mealPeriods, activeMeal);
       });
       return {
         ...cat,

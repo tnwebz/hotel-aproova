@@ -29,6 +29,8 @@ interface OrderListContextType {
   setTableNumber: (table: string) => void;
   customerNotes: string;
   setCustomerNotes: (notes: string) => void;
+  allergicNotes: string;
+  setAllergicNotes: (notes: string) => void;
   isOrderModalOpen: boolean;
   setIsOrderModalOpen: (open: boolean) => void;
 }
@@ -38,11 +40,13 @@ const OrderListContext = createContext<OrderListContextType | undefined>(undefin
 const CACHE_STORAGE_KEY = "hotel_apoorvaa_order_list_cache_v2";
 const TABLE_STORAGE_KEY = "hotel_apoorvaa_table_number_cache";
 const NOTES_STORAGE_KEY = "hotel_apoorvaa_notes_cache";
+const ALLERGIC_STORAGE_KEY = "hotel_apoorvaa_allergic_cache";
 
 export function OrderListProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<OrderListItem[]>([]);
   const [tableNumber, setTableNumberState] = useState<string>("");
   const [customerNotes, setCustomerNotesState] = useState<string>("");
+  const [allergicNotes, setAllergicNotesState] = useState<string>("");
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
 
@@ -62,6 +66,9 @@ export function OrderListProvider({ children }: { children: React.ReactNode }) {
 
       const cachedNotes = localStorage.getItem(NOTES_STORAGE_KEY);
       if (cachedNotes) setCustomerNotesState(cachedNotes);
+
+      const cachedAllergic = localStorage.getItem(ALLERGIC_STORAGE_KEY);
+      if (cachedAllergic) setAllergicNotesState(cachedAllergic);
     } catch (e) {
       console.warn("Failed to read order cache from localStorage", e);
     } finally {
@@ -94,6 +101,15 @@ export function OrderListProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(NOTES_STORAGE_KEY, notes);
     } catch (e) {
       console.warn("Failed to cache customer notes", e);
+    }
+  };
+
+  const setAllergicNotes = (notes: string) => {
+    setAllergicNotesState(notes);
+    try {
+      localStorage.setItem(ALLERGIC_STORAGE_KEY, notes);
+    } catch (e) {
+      console.warn("Failed to cache allergic notes", e);
     }
   };
 
@@ -139,9 +155,12 @@ export function OrderListProvider({ children }: { children: React.ReactNode }) {
 
   const clearList = () => {
     setItems([]);
+    setCustomerNotesState("");
+    setAllergicNotesState("");
     try {
       localStorage.removeItem(CACHE_STORAGE_KEY);
       localStorage.removeItem(NOTES_STORAGE_KEY);
+      localStorage.removeItem(ALLERGIC_STORAGE_KEY);
     } catch (e) {
       console.warn("Failed to clear order cache", e);
     }
@@ -189,6 +208,8 @@ export function OrderListProvider({ children }: { children: React.ReactNode }) {
         setTableNumber,
         customerNotes,
         setCustomerNotes,
+        allergicNotes,
+        setAllergicNotes,
         isOrderModalOpen,
         setIsOrderModalOpen,
       }}

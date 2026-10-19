@@ -13,6 +13,7 @@ import {
   MEAL_PERIOD_CONFIGS,
   getAvailabilityDisplay,
   getKolkataDate,
+  isMealPeriodMatch,
 } from "@/data/mealPeriods";
 import { ArrowLeft, Clock, Sparkles } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -113,7 +114,7 @@ function HomeContent() {
     return menuData
       .map((cat) => {
         const items = cat.items.filter((item) => {
-          return item.mealPeriods.includes(activeMeal);
+          return isMealPeriodMatch(item.mealPeriods, activeMeal);
         });
         return {
           ...cat,
@@ -121,7 +122,7 @@ function HomeContent() {
         };
       })
       .filter((cat) => cat.items.length > 0);
-  }, [activeMeal]);
+  }, [activeMeal, menuData]);
 
   // Selected category object
   const activeCategoryObj = useMemo(() => {

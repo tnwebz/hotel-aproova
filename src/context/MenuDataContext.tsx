@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { MenuCategory, MenuItem, menuData as fallbackMenuData } from "@/data/menu";
 import { fetchPublicMenu, fetchFeaturedItems } from "@/lib/supabase/menu";
+import { createClient } from "@/lib/supabase/client";
 
 interface MenuDataContextType {
   menuData: MenuCategory[];
@@ -50,6 +51,30 @@ export const MenuDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     loadMenu();
+
+    // Supabase Realtime subscription for live menu item changes
+    const supabase = createClient();
+    const channel = supabase
+      .channel("menu-items-realtime-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "menu_items" },
+        () => {
+          loadMenu();
+        }
+      )
+      .subscribe();
+
+    // Local custom event listener for instant UI sync
+    const handleMenuRefresh = () => {
+      loadMenu();
+    };
+    window.addEventListener("hotel_apoorvaa_menu_refresh", handleMenuRefresh);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("hotel_apoorvaa_menu_refresh", handleMenuRefresh);
+    };
   }, [loadMenu]);
 
   return (

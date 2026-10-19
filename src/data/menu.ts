@@ -39,7 +39,7 @@ export const hotelDetails = {
 };
 
 // Curated Category Hero Images (Using Real High-Resolution Apoorvaa Menu Assets)
-const categoryHeroImages: Record<string, string> = {
+export const categoryHeroImages: Record<string, string> = {
   "tiffin": "/menu-images/tiffin/kesari.webp",
   "dosa": "/menu-images/dosa/apoorvaa-special-roast.webp",
   "rava-roast": "/menu-images/rava-roast/rava-roast.webp",
@@ -66,7 +66,7 @@ const categoryHeroImages: Record<string, string> = {
 };
 
 // Complete 306 Real Dish Image Mapping Table
-const realDishImageMap: Record<string, string> = {
+export const realDishImageMap: Record<string, string> = {
   "tiffinkesari": "/menu-images/tiffin/kesari.webp",
   "tiffinidly2pcs": "/menu-images/tiffin/idly.webp",
   "tiffinsambaridly2pcs": "/menu-images/tiffin/sambar-idly.webp",

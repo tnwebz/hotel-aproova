@@ -16,6 +16,20 @@ export interface MealPeriodConfig {
   categoryIds: string[];
 }
 
+/**
+ * Evaluates whether an item's meal periods match the active meal period view.
+ * An item marked as ALL_DAY or ALL is available across all meal periods (Breakfast, Lunch, Evening Snacks, Dinner).
+ */
+export function isMealPeriodMatch(itemMealPeriods: MealPeriod[] | undefined, activeMeal: MealPeriod): boolean {
+  if (activeMeal === "ALL") return true;
+  if (!itemMealPeriods || itemMealPeriods.length === 0) return true;
+  return (
+    itemMealPeriods.includes(activeMeal) ||
+    itemMealPeriods.includes("ALL_DAY") ||
+    itemMealPeriods.includes("ALL")
+  );
+}
+
 export const MEAL_PERIOD_CONFIGS: MealPeriodConfig[] = [
   {
     id: "BREAKFAST",
@@ -111,9 +125,15 @@ export function isItemAvailable(
     availabilityType: AvailabilityType;
     startTime?: string;
     endTime?: string;
+    isAvailable?: boolean;
   },
   currentDate: Date = new Date()
 ): boolean {
+  // If explicitly marked out of stock or disabled by admin, return false
+  if (item.isAvailable === false) {
+    return false;
+  }
+
   if (item.availabilityType === "ALWAYS") {
     return true;
   }
@@ -143,7 +163,17 @@ export function getAvailabilityDisplay(item: {
   availabilityType: AvailabilityType;
   startTime?: string;
   endTime?: string;
+  isAvailable?: boolean;
 }, currentDate: Date = new Date()): AvailabilityStatus {
+  // 1. Check if admin explicitly toggled item out of stock / disabled
+  if (item.isAvailable === false) {
+    return {
+      isAvailable: false,
+      statusText: "Out of Stock",
+      timingLabel: "Out of Stock",
+    };
+  }
+
   const available = isItemAvailable(item, currentDate);
 
   if (item.availabilityType === "ALWAYS") {

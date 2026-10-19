@@ -9,7 +9,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Disable Lenis on admin routes for fast native interaction
-    if (pathname?.startsWith("/admin")) {
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/admin-access")) {
       return;
     }
 

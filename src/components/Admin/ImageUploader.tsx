@@ -2,8 +2,8 @@
 
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { UploadCloud, Image as ImageIcon, X, RefreshCw, AlertCircle } from "lucide-react";
-import { getStorageImageUrl } from "@/lib/supabase/storage";
+import { UploadCloud, Image as ImageIcon, X, RefreshCw, AlertCircle, Loader2, CheckCircle2 } from "lucide-react";
+import { getStorageImageUrl, compressImage } from "@/lib/supabase/storage";
 
 interface ImageUploaderProps {
   currentImagePath?: string | null;
@@ -23,6 +23,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [originalSizeBytes, setOriginalSizeBytes] = useState<number | null>(null);
 
   // Generate preview URL if pending file exists
   const previewUrl = React.useMemo(() => {
@@ -35,23 +37,30 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     return null;
   }, [pendingFile, currentImagePath]);
 
-  const handleFiles = (files: FileList | null) => {
+  const handleFiles = async (files: FileList | null) => {
     setErrorMsg(null);
     if (!files || files.length === 0) return;
 
     const file = files[0];
     const validTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
-    if (!validTypes.includes(file.type)) {
+    if (file.type && !validTypes.includes(file.type)) {
       setErrorMsg("Please select a JPEG, PNG, or WebP image.");
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setErrorMsg("Image size exceeds 5 MB. Please select a smaller photo.");
-      return;
-    }
+    setIsCompressing(true);
+    setOriginalSizeBytes(file.size);
 
-    onFileSelect(file);
+    try {
+      // Automatically resize & compress any image to ~300KB
+      const compressedFile = await compressImage(file, 1280, 350 * 1024);
+      onFileSelect(compressedFile);
+    } catch (err: any) {
+      console.warn("Auto-compression warning, using original file:", err);
+      onFileSelect(file);
+    } finally {
+      setIsCompressing(false);
+    }
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -89,8 +98,22 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         disabled={disabled}
       />
 
-      {/* Preview or Dropzone */}
-      {previewUrl ? (
+      {/* Preview, Compressing State, or Dropzone */}
+      {isCompressing ? (
+        <div className="border-2 border-dashed border-amber-500/60 rounded-xl p-8 flex flex-col items-center justify-center gap-2 bg-amber-50/40 text-center">
+          <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 animate-spin">
+            <Loader2 className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-zinc-900">
+              Resizing & Optimizing Photo...
+            </p>
+            <p className="text-xs text-zinc-500 mt-0.5">
+              Automatically compressing to ~300 KB WebP for blazing-fast mobile viewing
+            </p>
+          </div>
+        </div>
+      ) : previewUrl ? (
         <div className="relative group rounded-xl border border-zinc-200 overflow-hidden bg-zinc-50 p-2">
           <div className="relative w-full h-44 sm:h-52 rounded-lg overflow-hidden bg-zinc-900/5">
             <img
@@ -115,6 +138,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 onClick={() => {
                   if (pendingFile) {
                     onFileSelect(null);
+                    setOriginalSizeBytes(null);
                   } else {
                     onRemoveCurrent();
                   }
@@ -129,9 +153,25 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
 
           <div className="mt-2 flex items-center justify-between text-xs text-zinc-500 px-1">
-            <span className="flex items-center gap-1">
-              <ImageIcon className="w-3.5 h-3.5 text-zinc-400" />
-              {pendingFile ? `${(pendingFile.size / 1024).toFixed(0)} KB (Pending upload)` : "Active menu photo"}
+            <span className="flex items-center gap-1.5">
+              {pendingFile ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span className="font-semibold text-emerald-700">
+                    {(pendingFile.size / 1024).toFixed(0)} KB WebP
+                  </span>
+                  {originalSizeBytes && originalSizeBytes > pendingFile.size && (
+                    <span className="text-[11px] text-zinc-400">
+                      (optimized from {(originalSizeBytes / (1024 * 1024)).toFixed(1)} MB)
+                    </span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <ImageIcon className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>Active menu photo</span>
+                </>
+              )}
             </span>
             <div className="flex gap-2">
               <button
@@ -146,6 +186,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 onClick={() => {
                   if (pendingFile) {
                     onFileSelect(null);
+                    setOriginalSizeBytes(null);
                   } else {
                     onRemoveCurrent();
                   }
@@ -178,7 +219,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               Click to upload or drag and drop
             </p>
             <p className="text-xs text-zinc-500 mt-0.5">
-              JPG, PNG, or WebP (Direct camera / gallery picker on mobile)
+              JPG, PNG, or WebP · Any size (auto-compressed to ~300 KB)
             </p>
           </div>
           <button
