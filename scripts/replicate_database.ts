@@ -51,27 +51,28 @@ async function main() {
   console.log(`📡 Target Supabase URL: ${supabaseUrl}`);
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // 1. Check storage bucket
-  console.log("\n📦 Checking Storage Bucket 'menu-images'...");
+  // 1. Check storage buckets
+  console.log("\n📦 Checking Storage Buckets ('menu-items' & 'menu-images')...");
   try {
     const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
     if (bucketError) {
       console.warn("⚠️  Could not list buckets via API (Service Role Key may be needed).");
     } else {
-      const exists = buckets.some((b) => b.id === "menu-images");
-      if (exists) {
-        console.log("✅ Bucket 'menu-images' already exists and is active.");
-      } else {
-        const { error: createError } = await supabase.storage.createBucket("menu-images", {
-          public: true,
-          fileSizeLimit: 5242880, // 5MB
-          allowedMimeTypes: ["image/jpeg", "image/png", "image/webp", "image/svg+xml"],
-        });
-        if (createError) {
-          console.warn("⚠️  Failed to create bucket via API:", createError.message);
-          console.log("💡 The bucket will be created via full_replication.sql in Supabase SQL editor.");
+      for (const bucketName of ["menu-items", "menu-images"]) {
+        const exists = buckets.some((b) => b.id === bucketName);
+        if (exists) {
+          console.log(`✅ Bucket '${bucketName}' exists and is active.`);
         } else {
-          console.log("✅ Bucket 'menu-images' created successfully.");
+          const { error: createError } = await supabase.storage.createBucket(bucketName, {
+            public: true,
+            fileSizeLimit: 10485760, // 10MB
+            allowedMimeTypes: ["image/jpeg", "image/png", "image/webp", "image/svg+xml"],
+          });
+          if (createError) {
+            console.warn(`⚠️  Failed to create bucket '${bucketName}' via API:`, createError.message);
+          } else {
+            console.log(`✅ Bucket '${bucketName}' created successfully.`);
+          }
         }
       }
     }

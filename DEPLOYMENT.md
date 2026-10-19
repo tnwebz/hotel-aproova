@@ -75,9 +75,11 @@ Enter the required environment variables in Cloudflare Dashboard under **Project
 
 | Variable Name | Type | Value / Purpose |
 | :--- | :--- | :--- |
-| `NEXT_PUBLIC_SUPABASE_URL` | **PUBLIC** | `https://<your-supabase-ref>.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **PUBLIC** | Your Supabase Anon / Publishable API key |
-| `NODE_VERSION` | **PUBLIC** (Build variable) | `20` or `22` |
+| `NEXT_PUBLIC_SUPABASE_URL` | **PUBLIC** | `https://cghalaypznubnitsegjy.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **PUBLIC** | `sb_publishable_9st-KWunnskqHYFeepltGA_T_PBITBH` |
+| `ADMIN_PASSWORD` | **SECRET / ENCRYPTED** | `apoorvaa@2026` |
+| `NODE_VERSION` | **PUBLIC** (Build variable) | `20` |
+
 
 > **IMPORTANT SECURITY RULES:**
 > - **DO NOT** enter `SUPABASE_SERVICE_ROLE_KEY` in frontend or public environment variables.

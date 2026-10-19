@@ -1,6 +1,6 @@
 import { createClient } from "./client";
 
-export const STORAGE_BUCKET = "menu-images";
+export const STORAGE_BUCKET = "menu-items";
 
 /**
  * Returns the image URL for an item.
@@ -17,7 +17,7 @@ export function getStorageImageUrl(imagePath?: string | null): string {
   
   // Custom admin uploaded photo in Supabase bucket
   if (imagePath.startsWith("custom_uploads/") || imagePath.includes("/main.webp")) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://oleqbctgwdxpfxqdhgff.supabase.co";
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://cghalaypznubnitsegjy.supabase.co";
     if (supabaseUrl) {
       return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath.replace(/^\//, "")}`;
     }
