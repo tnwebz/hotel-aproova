@@ -132,12 +132,40 @@ export async function uploadProductImage(file: File, itemKey: string): Promise<s
     throw new Error("Invalid file type. Please upload a JPEG, PNG, or WebP image.");
   }
 
-  const supabase = createClient();
   const safeKey = itemKey.replace(/[^a-zA-Z0-9_-]/g, "_").toLowerCase() || "item";
-  const filePath = `custom_uploads/${safeKey}/main.webp`;
 
   // Automatically compress to ~250-300KB WebP
   const compressedFile = await compressImage(file);
+
+  // 1. Preferred method: Upload via secure server route (uses Service Role, bypassing client RLS)
+  try {
+    const formData = new FormData();
+    formData.append("file", compressedFile);
+    formData.append("itemKey", safeKey);
+
+    const res = await fetch("/api/admin/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.filePath) {
+        return data.filePath;
+      }
+    } else {
+      const errData = await res.json().catch(() => null);
+      if (errData?.error && !errData.error.includes("Unauthorized")) {
+        throw new Error(errData.error);
+      }
+    }
+  } catch (apiErr: any) {
+    console.warn("Server upload API failed, trying direct storage fallback:", apiErr.message);
+  }
+
+  // 2. Fallback: Direct browser upload if user has active Supabase session
+  const supabase = createClient();
+  const filePath = `custom_uploads/${safeKey}/main.webp`;
 
   const { error } = await supabase.storage
     .from(STORAGE_BUCKET)
@@ -162,9 +190,21 @@ export async function deleteProductImage(imagePath: string): Promise<void> {
     return;
   }
 
-  const supabase = createClient();
   const cleanPath = imagePath.replace(/^\//, "");
 
+  // Try server route first
+  try {
+    const res = await fetch("/api/admin/upload-image", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imagePath: cleanPath }),
+    });
+    if (res.ok) return;
+  } catch (err) {
+    // fallback to client
+  }
+
+  const supabase = createClient();
   const { error } = await supabase.storage
     .from(STORAGE_BUCKET)
     .remove([cleanPath]);
@@ -173,3 +213,4 @@ export async function deleteProductImage(imagePath: string): Promise<void> {
     console.warn("Could not delete storage image:", error.message);
   }
 }
+
